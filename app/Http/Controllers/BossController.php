@@ -57,4 +57,16 @@ class BossController extends Controller
         $boss->update($data);
         return $boss;
     }
+
+    public function logout (Boss $boss)
+    {
+        $token=request()->bearerToken();
+        if ($token!==$boss->api_token) {
+            return 'token error';
+        }
+
+        $boss->api_token=null;
+        $boss->save();
+        return 'already logout';
+    }
 }
