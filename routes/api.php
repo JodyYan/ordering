@@ -20,4 +20,5 @@ Route::post('/boss', 'BossController@store');
 Route::post('/boss/login', 'BossController@login');
 Route::middleware('bossidentify')->group(function() {
     Route::get('/boss/{boss}', 'BossController@show');
+    Route::patch('/boss/{boss}', 'BossController@update');
 });

@@ -5,6 +5,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 use App\Http\Requests\Bossdata;
+use App\Http\Requests\Bossupdate;
 use App\Boss;
 
 class BossController extends Controller
@@ -41,5 +42,19 @@ class BossController extends Controller
         }
         $boss=Boss::findorfail($boss)->first();
         return ['name'=>$boss->name, 'account'=>$boss->account];
+    }
+
+    public function update(Boss $boss, Bossupdate $request) {
+        $token=request()->bearerToken();
+        if ($token!==$boss->api_token) {
+            return 'token error';
+        }
+
+        $data=$request->validated();
+        if (isset($data['password'])) {
+            $data['password']=Hash::make($data['password']);
+        }
+        $boss->update($data);
+        return $boss;
     }
 }
