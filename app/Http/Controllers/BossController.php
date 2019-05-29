@@ -15,4 +15,22 @@ class BossController extends Controller
         $data['password']=Hash::make($data['password']);
         return Boss::create($data);
     }
+
+    public function login()
+    {
+        $account=request()->get('account');
+        $password=request()->get('password');
+        if (!Boss::where('account', $account)->exists()) {
+            return 'error account';
+        }
+
+        $boss=Boss::where('account', $account)->first();
+        if (!Hash::check($password, $boss->password)) {
+            return 'error password';
+        }
+        $token=Str::random(60);
+        $boss->api_token=$token;
+        $boss->save();
+        return $boss;
+    }
 }
