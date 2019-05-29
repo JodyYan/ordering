@@ -18,3 +18,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/boss', 'BossController@store');
 Route::post('/boss/login', 'BossController@login');
+Route::middleware('bossidentify')->group(function() {
+    Route::get('/boss/{boss}', 'BossController@show');
+});

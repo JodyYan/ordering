@@ -33,4 +33,13 @@ class BossController extends Controller
         $boss->save();
         return $boss;
     }
+
+    public function show(Boss $boss) {
+        $token=request()->bearerToken();
+        if ($token!==$boss->api_token) {
+            return 'token error';
+        }
+        $boss=Boss::findorfail($boss)->first();
+        return ['name'=>$boss->name, 'account'=>$boss->account];
+    }
 }
