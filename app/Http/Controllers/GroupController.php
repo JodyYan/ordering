@@ -15,4 +15,9 @@ class GroupController extends Controller
         ]));
         return $group;
     }
+
+    public function index()
+    {
+        return Group::all();
+    }
 }
