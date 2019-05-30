@@ -25,4 +25,5 @@ Route::middleware('bossidentify')->group(function() {
     Route::post('/groups', 'GroupController@store');
     Route::get('/groups', 'GroupController@index');
     Route::patch('/groups/{group}', 'GroupController@update');
+    Route::delete('/groups/{group}', 'GroupController@destroy');
 });

@@ -28,4 +28,10 @@ class GroupController extends Controller
         ]));
         return Group::findorfail($group);
     }
+
+    public function destroy(Group $group)
+    {
+        $group->delete();
+        return 'already delete';
+    }
 }
