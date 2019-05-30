@@ -20,4 +20,12 @@ class GroupController extends Controller
     {
         return Group::all();
     }
+
+    public function update(Group $group)
+    {
+        $group->update(request()->validate([
+            'name'=>['string','unique:groups,name']
+        ]));
+        return Group::findorfail($group);
+    }
 }
