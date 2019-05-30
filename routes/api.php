@@ -22,4 +22,5 @@ Route::middleware('bossidentify')->group(function() {
     Route::get('/boss/{boss}', 'BossController@show');
     Route::patch('/boss/{boss}', 'BossController@update');
     Route::delete('/boss/logout/{boss}', 'BossController@logout');
+    Route::post('/groups', 'GroupController@store');
 });
