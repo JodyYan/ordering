@@ -24,7 +24,7 @@ class Bossupdate extends FormRequest
     public function rules()
     {
         return [
-            'account'=>['between:5,20', 'string', 'unique:bosses,account'],
+            'account'=>['between:1,20', 'string', 'unique:bosses,account'],
             'name'=>['between:1,20', 'string', 'unique:bosses,name'],
             'password'=>['between:1,15', 'string']
         ];

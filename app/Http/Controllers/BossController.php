@@ -46,16 +46,20 @@ class BossController extends Controller
 
     public function update(Boss $boss, Bossupdate $request) {
         $token=request()->bearerToken();
-        if ($token!==$boss->api_token) {
-            return 'token error';
-        }
+        $password=request()->get('oldpassword');
+        if (Hash::check($password, $boss->password)) {
+            if ($token!==$boss->api_token) {
+                 return 'token error';
+            }
 
-        $data=$request->validated();
-        if (isset($data['password'])) {
-            $data['password']=Hash::make($data['password']);
+             $data=$request->validated();
+            if (isset($data['password'])) {
+                 $data['password']=Hash::make($data['password']);
+            }
+            $boss->update($data);
+            return $boss;
         }
-        $boss->update($data);
-        return $boss;
+        return 'error password';
     }
 
     public function logout (Boss $boss)
