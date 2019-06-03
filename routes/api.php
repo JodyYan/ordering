@@ -28,6 +28,7 @@ Route::middleware('bossidentify')->group(function() {
     Route::delete('/groups/{group}', 'GroupController@destroy');
 });
 Route::post('/member', 'MemberController@store');
+Route::post('/member/login', 'MemberController@login');
 Route::middleware('memberidentify')->group(function() {
 
 });
