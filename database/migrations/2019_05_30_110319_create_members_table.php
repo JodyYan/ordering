@@ -22,6 +22,7 @@ class CreateMembersTable extends Migration
             $table->integer('rice')->default(1);
             $table->integer('vegetable')->default(1);
             $table->bigInteger('group_id')->unsigned();
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }
