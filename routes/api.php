@@ -27,6 +27,7 @@ Route::middleware('bossidentify')->group(function() {
     Route::patch('/groups/{group}', 'GroupController@update');
     Route::delete('/groups/{group}', 'GroupController@destroy');
 });
+Route::post('/member', 'MemberController@store');
 Route::middleware('memberidentify')->group(function() {
 
 });
