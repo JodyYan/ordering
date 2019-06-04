@@ -27,7 +27,7 @@ class Memberupdate extends FormRequest
             'name'=>['between:1,20', 'string'],
             'account'=>['between:1,15', 'string', 'unique:members,account'],
             'password'=>['between:1,15', 'string'],
-            'rice'=>['integer', 'between:1,6'],
+            'rice'=>['integer', 'between:1,7'],
             'vegetable'=>['integer', 'between:1,4'],
             'group_id'=>['exists:groups,id'],
             'note'=>['max:30']

@@ -27,7 +27,7 @@ class Memberdata extends FormRequest
             'name'=>['required', 'max:20', 'string'],
             'account'=>['required', 'between:1,15', 'string', 'unique:members,account'],
             'password'=>['required', 'between:1,15', 'string'],
-            'rice'=>['integer', 'between:1,6'],
+            'rice'=>['integer', 'between:1,7'],
             'vegetable'=>['integer', 'between:1,4'],
             'group_id'=>['required', 'exists:groups,id'],
             'note'=>['max:30']
