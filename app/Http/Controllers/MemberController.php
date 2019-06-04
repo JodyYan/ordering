@@ -54,4 +54,15 @@ class MemberController extends Controller
         return 'error password';
     }
 
+    public function logout (Member $member)
+    {
+        $token=request()->bearerToken();
+        if ($token!==$member->api_token) {
+            return 'token error';
+        }
+
+        $member->api_token=null;
+        $member->save();
+        return 'already logout';
+    }
 }
