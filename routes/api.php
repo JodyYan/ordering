@@ -30,5 +30,6 @@ Route::middleware('bossidentify')->group(function() {
 Route::post('/member', 'MemberController@store');
 Route::post('/member/login', 'MemberController@login');
 Route::middleware('memberidentify')->group(function() {
+    Route::patch('/member/{member}', 'MemberController@update');
 
 });
