@@ -28,6 +28,7 @@ Route::middleware('cors')->group (function(){
         Route::get('/groups', 'GroupController@index');
         Route::patch('/groups/{group}', 'GroupController@update');
         Route::delete('/groups/{group}', 'GroupController@destroy');
+        Route::post('/menus', 'MenuController@store');
     });
     Route::post('/member', 'MemberController@store');
     Route::post('/member/login', 'MemberController@login');
