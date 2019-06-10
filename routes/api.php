@@ -16,21 +16,23 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/boss', 'BossController@store');
-Route::post('/boss/login', 'BossController@login');
-Route::middleware('bossidentify')->group(function() {
-    Route::get('/boss/{boss}', 'BossController@show');
-    Route::patch('/boss/{boss}', 'BossController@update');
-    Route::delete('/boss/logout/{boss}', 'BossController@logout');
-    Route::post('/groups', 'GroupController@store');
-    Route::get('/groups', 'GroupController@index');
-    Route::patch('/groups/{group}', 'GroupController@update');
-    Route::delete('/groups/{group}', 'GroupController@destroy');
-});
-Route::post('/member', 'MemberController@store');
-Route::post('/member/login', 'MemberController@login');
-Route::middleware('memberidentify')->group(function() {
-    Route::patch('/member/{member}', 'MemberController@update');
-    Route::delete('/member/logout/{member}', 'MemberController@logout');
+Route::middleware('cors')->group (function(){
 
+    Route::post('/boss', 'BossController@store');
+    Route::post('/boss/login', 'BossController@login');
+    Route::middleware('bossidentify')->group(function() {
+        Route::get('/boss/{boss}', 'BossController@show');
+        Route::patch('/boss/{boss}', 'BossController@update');
+        Route::delete('/boss/logout/{boss}', 'BossController@logout');
+        Route::post('/groups', 'GroupController@store');
+        Route::get('/groups', 'GroupController@index');
+        Route::patch('/groups/{group}', 'GroupController@update');
+        Route::delete('/groups/{group}', 'GroupController@destroy');
+    });
+    Route::post('/member', 'MemberController@store');
+    Route::post('/member/login', 'MemberController@login');
+    Route::middleware('memberidentify')->group(function() {
+        Route::patch('/member/{member}', 'MemberController@update');
+        Route::delete('/member/logout/{member}', 'MemberController@logout');
+    });
 });
