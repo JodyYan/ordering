@@ -36,4 +36,13 @@ class MenuController extends Controller
             ->get();
         return $menus;
     }
+
+    public function show()
+    {
+        $daily=request()->get('menu_date');
+        $menus=Menu::with('flavors')
+            ->whereDate('menu_date', '=', $daily)
+            ->get();
+        return $menus;
+    }
 }
