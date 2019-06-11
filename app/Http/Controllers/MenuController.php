@@ -8,6 +8,7 @@ use App\Boss;
 use App\Flavor;
 use App\Http\Requests\Addmenu;
 use App\Http\Requests\Addflavor;
+use App\Http\Requests\UpdateMenu;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -44,5 +45,12 @@ class MenuController extends Controller
             ->whereDate('menu_date', '=', $daily)
             ->get();
         return $menus;
+    }
+
+    public function menuUpdate(UpdateMenu $request, Menu $menu)
+    {
+        $data=$request->validated();
+        $menu->update($data);
+        return $menu;
     }
 }
