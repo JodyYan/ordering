@@ -30,6 +30,7 @@ Route::middleware('cors')->group (function(){
         Route::delete('/groups/{group}', 'GroupController@destroy');
         Route::post('/menus', 'MenuController@store');
         Route::post('/flavors', 'MenuController@flavorstore');
+        Route::get('/menus', 'MenuController@index');
     });
     Route::post('/member', 'MemberController@store');
     Route::post('/member/login', 'MemberController@login');

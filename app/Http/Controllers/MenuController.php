@@ -25,4 +25,15 @@ class MenuController extends Controller
         $data=$request->validated();
         return Flavor::create($data);
     }
+
+    public function index()
+    {
+        $startDate=request()->get('start_date');
+        $endDate=request()->get('end_date');
+        $menus=Menu::with('flavors')
+            ->whereDate('menu_date', '>=', $startDate)
+            ->whereDate('menu_date', '<=', $endDate)
+            ->get();
+        return $menus;
+    }
 }
