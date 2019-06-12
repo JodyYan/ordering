@@ -15,14 +15,12 @@ class MenuController extends Controller
 {
     public function store(Addmenu $request)
     {
-        $token=request()->bearerToken();
         $data=$request->validated();
         return Menu::create($data);
     }
 
     public function flavorstore(Addflavor $request)
     {
-        $token=request()->bearerToken();
         $data=$request->validated();
         return Flavor::create($data);
     }
@@ -76,9 +74,9 @@ class MenuController extends Controller
     public function flavorDestroy(Flavor $flavor)
     {
         $flavor->delete();
-        $menus=Menu::with('flavors')
+        Menu::with('flavors')
             ->where('id', '=', $flavor->menu_id)
             ->get();
-        return 'already delete this flavor' . "\n" . $menus;
+        return 'already delete this flavor';
     }
 }
