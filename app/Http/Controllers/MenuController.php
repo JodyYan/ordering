@@ -64,4 +64,12 @@ class MenuController extends Controller
             ->get();
         return $menus;
     }
+
+    public function menuDestroy(Menu $menu)
+    {
+        Menu::with('flavors')
+            ->where('id', '=', $menu->id)
+            ->delete();
+        return 'already delete this menu';
+    }
 }
