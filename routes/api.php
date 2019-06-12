@@ -19,12 +19,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/boss', 'BossController@store');
 Route::post('/boss/login', 'BossController@login');
+Route::get('/groups', 'GroupController@index');
 Route::middleware('bossidentify')->group(function() {
     Route::get('/boss/{boss}', 'BossController@show');
     Route::patch('/boss/{boss}', 'BossController@update');
     Route::delete('/boss/logout/{boss}', 'BossController@logout');
     Route::post('/groups', 'GroupController@store');
-    Route::get('/groups', 'GroupController@index');
     Route::patch('/groups/{group}', 'GroupController@update');
     Route::delete('/groups/{group}', 'GroupController@destroy');
     Route::post('/menus', 'MenuController@store');
