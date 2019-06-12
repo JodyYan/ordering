@@ -72,4 +72,13 @@ class MenuController extends Controller
             ->delete();
         return 'already delete this menu';
     }
+
+    public function flavorDestroy(Flavor $flavor)
+    {
+        $flavor->delete();
+        $menus=Menu::with('flavors')
+            ->where('id', '=', $flavor->menu_id)
+            ->get();
+        return 'already delete this flavor' . "\n" . $menus;
+    }
 }
