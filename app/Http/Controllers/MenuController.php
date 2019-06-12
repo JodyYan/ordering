@@ -53,4 +53,15 @@ class MenuController extends Controller
         $menu->update($data);
         return $menu;
     }
+
+    public function flavorUpdate(Flavor $flavor)
+    {
+        $flavor->update(request()->validate([
+            'choice' => ['string']
+        ]));
+        $menus=Menu::with('flavors')
+            ->where('id', '=', $flavor->menu_id)
+            ->get();
+        return $menus;
+    }
 }

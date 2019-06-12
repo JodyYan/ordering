@@ -33,6 +33,7 @@ Route::middleware('cors')->group (function(){
         Route::get('/menus', 'MenuController@index');
         Route::get('/dailymenu', 'MenuController@show');
         Route::patch('/menus/{menu}', 'MenuController@menuUpdate');
+        Route::patch('/flavors/{flavor}', 'MenuController@flavorUpdate');
     });
     Route::post('/member', 'MemberController@store');
     Route::post('/member/login', 'MemberController@login');
