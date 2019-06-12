@@ -16,31 +16,29 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::middleware('cors')->group (function(){
 
-    Route::post('/boss', 'BossController@store');
-    Route::post('/boss/login', 'BossController@login');
-    Route::middleware('bossidentify')->group(function() {
-        Route::get('/boss/{boss}', 'BossController@show');
-        Route::patch('/boss/{boss}', 'BossController@update');
-        Route::delete('/boss/logout/{boss}', 'BossController@logout');
-        Route::post('/groups', 'GroupController@store');
-        Route::get('/groups', 'GroupController@index');
-        Route::patch('/groups/{group}', 'GroupController@update');
-        Route::delete('/groups/{group}', 'GroupController@destroy');
-        Route::post('/menus', 'MenuController@store');
-        Route::post('/flavors', 'MenuController@flavorstore');
-        Route::get('/menus', 'MenuController@index');
-        Route::get('/dailymenu', 'MenuController@show');
-        Route::patch('/menus/{menu}', 'MenuController@menuUpdate');
-        Route::patch('/flavors/{flavor}', 'MenuController@flavorUpdate');
-        Route::delete('/menus/{menu}', 'MenuController@menuDestroy');
-        Route::delete('/flavors/{flavor}', 'MenuController@flavorDestroy');
-    });
-    Route::post('/member', 'MemberController@store');
-    Route::post('/member/login', 'MemberController@login');
-    Route::middleware('memberidentify')->group(function() {
-        Route::patch('/member/{member}', 'MemberController@update');
-        Route::delete('/member/logout/{member}', 'MemberController@logout');
-    });
+Route::post('/boss', 'BossController@store');
+Route::post('/boss/login', 'BossController@login');
+Route::middleware('bossidentify')->group(function() {
+    Route::get('/boss/{boss}', 'BossController@show');
+    Route::patch('/boss/{boss}', 'BossController@update');
+    Route::delete('/boss/logout/{boss}', 'BossController@logout');
+    Route::post('/groups', 'GroupController@store');
+    Route::get('/groups', 'GroupController@index');
+    Route::patch('/groups/{group}', 'GroupController@update');
+    Route::delete('/groups/{group}', 'GroupController@destroy');
+    Route::post('/menus', 'MenuController@store');
+    Route::post('/flavors', 'MenuController@flavorstore');
+    Route::get('/menus', 'MenuController@index');
+    Route::get('/dailymenu', 'MenuController@show');
+    Route::patch('/menus/{menu}', 'MenuController@menuUpdate');
+    Route::patch('/flavors/{flavor}', 'MenuController@flavorUpdate');
+    Route::delete('/menus/{menu}', 'MenuController@menuDestroy');
+    Route::delete('/flavors/{flavor}', 'MenuController@flavorDestroy');
+});
+Route::post('/member', 'MemberController@store');
+Route::post('/member/login', 'MemberController@login');
+Route::middleware('memberidentify')->group(function() {
+    Route::patch('/member/{member}', 'MemberController@update');
+    Route::delete('/member/logout/{member}', 'MemberController@logout');
 });
