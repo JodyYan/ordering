@@ -24,7 +24,8 @@ class GroupController extends Controller
     public function update(Group $group)
     {
         $group->update(request()->validate([
-            'name'=>['string','unique:groups,name']
+            'name' => ['string','unique:groups,name'],
+            'time_limit' => ['boolean']
         ]));
         return Group::findorfail($group);
     }
