@@ -16,4 +16,18 @@ class DeadlineController extends Controller
         }
         return Deadline::create($data);
     }
+
+    public function timeIndex()
+    {
+        $startDate=request()->get('start_date');
+        $endDate=request()->get('end_date');
+        $groupId=request()->get('group_id');
+        if (!isset($startDate) || !isset($endDate)) {
+            return 'Date error';
+        }
+        return Deadline::where('group_id', $groupId)
+            ->whereDate('which_date', '>=', $startDate)
+            ->whereDate('which_date', '<=', $endDate)
+            ->get();
+    }
 }
