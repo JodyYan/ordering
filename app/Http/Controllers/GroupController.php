@@ -25,7 +25,8 @@ class GroupController extends Controller
     {
         $group->update(request()->validate([
             'name' => ['string','unique:groups,name'],
-            'time_limit' => ['boolean']
+            'time_limit' => ['boolean'],
+            'preset_time' => ['date_format:H:i', 'required_if:time_limit,1']
         ]));
         return Group::findorfail($group);
     }
