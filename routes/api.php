@@ -35,6 +35,7 @@ Route::middleware('bossidentify')->group(function() {
     Route::patch('/flavors/{flavor}', 'MenuController@flavorUpdate');
     Route::delete('/menus/{menu}', 'MenuController@menuDestroy');
     Route::delete('/flavors/{flavor}', 'MenuController@flavorDestroy');
+    Route::post('/deadline', 'DeadlineController@timeStore');
 });
 Route::post('/member', 'MemberController@store');
 Route::post('/member/login', 'MemberController@login');
