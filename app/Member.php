@@ -8,4 +8,9 @@ class Member extends Model
 {
     protected $guarded=[];
     protected $hidden=['password'];
+
+    public function group()
+    {
+        return $this->belongsTo('App\Group');
+    }
 }
