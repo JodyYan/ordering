@@ -30,7 +30,7 @@ class GroupController extends Controller
             'time_limit' => ['boolean'],
             'preset_time' => ['date_format:H:i', 'required_if:time_limit,1']
         ]));
-        return Group::findorfail($group);
+        return $group;
     }
 
     public function destroy(Group $group)
