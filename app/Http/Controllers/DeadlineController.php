@@ -30,4 +30,12 @@ class DeadlineController extends Controller
             ->whereDate('which_date', '<=', $endDate)
             ->get();
     }
+
+    public function timeUpdate(Deadline $deadline)
+    {
+        $deadline->update(request()->validate([
+            'deadline_time' => ['required', 'date_format:H:i']
+        ]));
+        return $deadline;
+    }
 }
