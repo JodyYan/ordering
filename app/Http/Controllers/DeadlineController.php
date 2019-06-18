@@ -38,4 +38,10 @@ class DeadlineController extends Controller
         ]));
         return $deadline;
     }
+
+    public function timeDestroy(Deadline $deadline)
+    {
+        $deadline->delete();
+        return 'already deleted this data';
+    }
 }
