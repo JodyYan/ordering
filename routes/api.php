@@ -45,4 +45,5 @@ Route::post('/member/login', 'MemberController@login');
 Route::middleware('memberidentify')->group(function() {
     Route::patch('/member/{member}', 'MemberController@update');
     Route::delete('/member/logout/{member}', 'MemberController@logout');
+    Route::get('/viewmenus', 'OrderController@getMenus');
 });
