@@ -46,4 +46,5 @@ Route::middleware('memberidentify')->group(function() {
     Route::patch('/member/{member}', 'MemberController@update');
     Route::delete('/member/logout/{member}', 'MemberController@logout');
     Route::get('/viewmenus', 'OrderController@getMenus');
+    Route::post('/order', 'OrderController@store')->middleware('checktime');
 });
