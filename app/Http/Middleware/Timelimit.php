@@ -26,8 +26,18 @@ class Timelimit
         $tomorrow=Carbon::tomorrow();
         $nowTime=Carbon::now();
         $timeCheck=Deadline::where('group_id', $member->group_id)->where('which_date', $today)->first();
+        $menuId=$request->get('menu_id');
+
+        if (!Menu::where('id', $menuId)->exists()) {
+            return response(['error' => 'This menu id does not exist.'], 422);
+        }
+
         $menu=Menu::find($request->get('menu_id'));
         $menuDate=Carbon::parse($menu->menu_date);
+
+        if ($menuDate->lt($tomorrow)) {
+            return response(['error' => 'This item is overdate.'], 422);
+        }
 
         if ($menuDate->eq($tomorrow)) {
             if ($member->group->time_limit == 1) {
