@@ -68,4 +68,18 @@ class OrderController extends Controller
 
         return Order::create($data);
     }
+
+    public function show()
+    {
+        $token=request()->bearerToken();
+        $startDate=request()->get('start_date');
+        $endDate=request()->get('end_date');
+        $member=Member::where('api_token', $token)->first();
+        $orders=Order::where('user_id', $member->id)
+            ->whereDate('menu_date', '>=', $startDate)
+            ->whereDate('menu_date', '<=', $endDate)
+            ->get();
+
+        return $orders;
+    }
 }

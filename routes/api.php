@@ -47,4 +47,5 @@ Route::middleware('memberidentify')->group(function() {
     Route::delete('/member/logout/{member}', 'MemberController@logout');
     Route::get('/viewmenus', 'OrderController@getMenus');
     Route::post('/order', 'OrderController@store')->middleware('checktime');
+    Route::get('/order', 'OrderController@show');
 });
