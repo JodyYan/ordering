@@ -22,14 +22,13 @@ class OrderUpdate
      */
     public function handle($request, Closure $next)
     {
-        $routeParam=$request->route('order');
+        $order=$request->route('order');
         $token=$request->bearerToken();
         $member=Member::where('api_token', $token)->first();
         $today=Carbon::today();
         $tomorrow=Carbon::tomorrow();
         $nowTime=Carbon::now();
         $timeCheck=Deadline::where('group_id', $member->group_id)->where('which_date', $today)->first();
-        $order=Order::find($routeParam);
         $menuDate=Carbon::parse($order->menu_date);
 
         if ($menuDate->lt($tomorrow)) {

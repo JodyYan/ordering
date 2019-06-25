@@ -48,4 +48,5 @@ Route::middleware('memberidentify')->group(function() {
     Route::get('/viewmenus', 'OrderController@getMenus');
     Route::post('/order', 'OrderController@store')->middleware('checktime');
     Route::get('/order', 'OrderController@show');
+    Route::patch('/order/{order}', 'OrderController@update')->middleware('order.update.check');
 });

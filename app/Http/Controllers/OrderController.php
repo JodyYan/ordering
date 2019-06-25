@@ -8,6 +8,7 @@ use App\Menu;
 use App\Flavor;
 use App\Order;
 use App\Http\Requests\Orderdata;
+use App\Http\Requests\OrderUpdate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -80,5 +81,60 @@ class OrderController extends Controller
             ->get();
 
         return $orders;
+    }
+
+    public function update(Order $order, OrderUpdate $request)
+    {
+        $token=request()->bearerToken();
+        $member=Member::where('api_token', $token)->first();
+        if ($member->id != $order->user_id) {
+            return 'Please choose true order.';
+        }
+
+        $data=$request->validated();
+
+        if (isset($data['flavor_id'])) {
+            $flavor=Flavor::find($data['flavor_id']);
+            if ($flavor->menu_id != $order->menu_id) {
+                return 'This flavor not belong the menu.';
+            }
+        }
+
+        $menu=Menu::find($order->menu_id);
+
+        if (isset($data['quantity']) && $menu->quantity_limit !== null) {
+            $dq=$data['quantity'];
+            $mql=$menu->quantity_limit;
+            $oq=$order->quantity;
+            $disparity=$dq-$oq;
+
+            if ($data['quantity'] < $order->quantity) {
+                $mql=$mql-$disparity;
+                $menu->quantity_limit=$mql;
+                $menu->save();
+            }
+
+            if ($dq > $oq) {
+
+                if ($mql > $disparity) {
+                    $mql=$mql-$dq;
+                    $menu->quantity_limit=$mql;
+                    $menu->save();
+                }
+
+                if ($mql < $disparity) {
+                    return 'This item only remain ' . $menu->quantity_limit . '.';
+                }
+            }
+        }
+
+        if (isset($data['flavor_id'])) {
+            $data['flavor_choice']=$flavor->choice;
+        }
+
+
+        unset($data['flavor_id']);
+        $order->update($data);
+        return $order;
     }
 }
