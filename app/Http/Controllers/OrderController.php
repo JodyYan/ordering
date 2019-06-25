@@ -137,4 +137,26 @@ class OrderController extends Controller
         $order->update($data);
         return $order;
     }
+
+    public function destroy(Order $order)
+    {
+        $token=request()->bearerToken();
+        $member=Member::where('api_token', $token)->first();
+        if ($member->id != $order->user_id) {
+            return 'Please choose true order.';
+        }
+
+        $menu=Menu::find($order->menu_id);
+
+        if ($menu->quantity_limit !== null) {
+            $mql=$menu->quantity_limit;
+            $oq=$order->quantity;
+            $mql=$mql+$oq;
+            $menu->quantity_limit=$mql;
+            $menu->save();
+        }
+
+        $order->delete();
+        return 'already delete';
+    }
 }

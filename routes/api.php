@@ -49,4 +49,5 @@ Route::middleware('memberidentify')->group(function() {
     Route::post('/order', 'OrderController@store')->middleware('checktime');
     Route::get('/order', 'OrderController@show');
     Route::patch('/order/{order}', 'OrderController@update')->middleware('order.update.check');
+    Route::delete('/order/{order}', 'OrderController@destroy')->middleware('order.update.check');
 });
