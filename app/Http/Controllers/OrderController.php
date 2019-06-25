@@ -63,7 +63,6 @@ class OrderController extends Controller
             $menu->save();
         }
 
-        unset($data['menu_id']);
         unset($data['flavor_id']);
 
         return Order::create($data);
