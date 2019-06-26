@@ -9,6 +9,7 @@ use App\Flavor;
 use App\Order;
 use App\Http\Requests\Orderdata;
 use App\Http\Requests\OrderUpdate;
+use App\Http\Requests\Paid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -162,5 +163,19 @@ class OrderController extends Controller
 
         $order->delete();
         return 'already delete';
+    }
+
+    public function paidUpdate(Paid $request)
+    {
+        $data=$request->validated();
+        $orders=Order::whereDate('menu_date', '>=', $data['start_date'])
+            ->whereDate('menu_date', '<=', $data['end_date'])
+            ->whereIn('user_id', $data['member_id'])
+            ->get();
+        foreach ($orders as $order) {
+            $order->paid =! $order->paid;
+            $order->save();
+        }
+        return 'ok';
     }
 }
