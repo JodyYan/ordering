@@ -40,6 +40,7 @@ Route::middleware('bossidentify')->group(function() {
     Route::patch('/deadline/{deadline}', 'DeadlineController@timeUpdate');
     Route::delete('/deadline/{deadline}', 'DeadlineController@timeDestroy');
     Route::patch('/paidstatus', 'OrderController@paidUpdate');
+    Route::get('/group/count', 'StaticController@orderCount');
 });
 Route::post('/member', 'MemberController@store');
 Route::post('/member/login', 'MemberController@login');
