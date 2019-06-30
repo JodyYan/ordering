@@ -48,4 +48,31 @@ class StaticController extends Controller
             ]
         ];
     }
+
+    public function menuCount()
+    {
+        $date=request()->get('date');
+        $groupId=request()->get('group_id');
+        $query=Order::whereDate('menu_date', $date);
+        if ($groupId !== null) {
+            $query->whereHas('member', function ($findGroup) use ($groupId)
+            {
+                $findGroup->where('group_id', $groupId);
+            });
+        }
+        $result=(clone $query)
+            ->select('menu_name', DB::raw("SUM(menu_price * quantity) as total_price"), DB::raw("SUM(quantity) as total_amount"))
+            ->groupBy('menu_name')
+            ->get();
+
+        $list=(clone $query)
+            ->join('members', 'orders.user_id', '=', 'members.id')
+            ->select('members.name', 'orders.menu_name', 'orders.user_rice', 'orders.user_vegetable', 'orders.note')
+            ->get();
+
+        return [
+            'statistic' => $result,
+            'list' => $list,
+        ];
+    }
 }
