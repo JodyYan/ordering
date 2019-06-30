@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DB;
 use App\Order;
+use App\Member;
 use Illuminate\Http\Request;
 
 class StaticController extends Controller
@@ -73,6 +74,31 @@ class StaticController extends Controller
         return [
             'statistic' => $result,
             'list' => $list,
+        ];
+    }
+
+    public function personalCount()
+    {
+        $startDate=request()->get('start_date');
+        $endDate=request()->get('end_date');
+        $token=request()->bearerToken();
+        $member=Member::where('api_token', $token)->first();
+        $query=Order::whereDate('menu_date', '>=', $startDate)
+            ->whereDate('menu_date', '<=', $endDate)
+            ->where('user_id', $member->id);
+
+        $totalPrice=(clone $query)->select(DB::raw("SUM(menu_price * quantity) as total_price"))
+            ->value('total_price');
+        $paymentStatus=(clone $query)->select(DB::raw("SUM(orders.paid) > 0 as payment_status"))
+            ->value('payment_status');
+        $personalPaid=(clone $query)
+            ->select('menu_name', 'menu_price', 'user_rice', 'user_vegetable', 'flavor_choice', 'note')
+            ->get();
+
+        return [
+            'total_price' => $totalPrice,
+            'payment_status' => $paymentStatus,
+            'list' => $personalPaid,
         ];
     }
 }
