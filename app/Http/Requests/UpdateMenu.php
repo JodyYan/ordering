@@ -29,7 +29,8 @@ class UpdateMenu extends FormRequest
             'group_id' => ['exists:groups,id'],
             'quantity_limit' => ['integer', 'min:0'],
             'note' => ['string', 'max:30'],
-            'menu_date' => ['date']
+            'menu_date' => ['date'],
+            'type' => ['boolean']
         ];
     }
 }
