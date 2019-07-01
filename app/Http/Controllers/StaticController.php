@@ -71,7 +71,25 @@ class StaticController extends Controller
             ->select('members.name', 'orders.menu_name', 'orders.user_rice', 'orders.user_vegetable', 'orders.note')
             ->get();
 
+        $ricies=(clone $query)
+            ->select('user_rice', 'quantity')
+            ->get();
+        $totalRice=0;
+        $exchange=[
+            null => 0,
+            1 => 1,
+            2 =>0.5,
+            3 => 0.33,
+            4 => 0.66,
+            5 => 0.25,
+            6 => 0,
+            7 => 1.5
+        ];
+        foreach ($ricies as $rice) {
+            $totalRice+=$exchange[$rice->user_rice] * $rice->quantity;
+        }
         return [
+            'total_rice' => $totalRice,
             'statistic' => $result,
             'list' => $list,
         ];
