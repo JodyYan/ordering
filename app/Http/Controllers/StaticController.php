@@ -66,7 +66,7 @@ class StaticController extends Controller
 
         $list=(clone $query)
             ->join('members', 'orders.user_id', '=', 'members.id')
-            ->select('members.name', 'orders.menu_name', 'orders.user_rice', 'orders.user_vegetable', 'orders.note')
+            ->select('members.name', 'orders.menu_name', 'orders.quantity', 'orders.user_rice', 'orders.user_vegetable', 'orders.note')
             ->get();
 
         $ricies=(clone $query)
