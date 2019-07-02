@@ -44,9 +44,7 @@ class StaticController extends Controller
                 'unpaid' => $unpaid,
             ],
 
-            'list' => [
-                $personalPaid,
-            ]
+            'list' => $personalPaid,
         ];
     }
 
