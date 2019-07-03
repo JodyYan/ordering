@@ -33,45 +33,50 @@ class OrderController extends Controller
     {
         $token=request()->bearerToken();
         $member=Member::where('api_token', $token)->first();
-        $data=$request->validated();
-        $menu=Menu::find($data['menu_id']);
-        if (isSet($data['flavor_id'])) {
-            $flavor=Flavor::find($data['flavor_id']);
-            if ($flavor->menu_id != $menu->id) {
-                return 'This flavor not belong the menu.';
+        $datas=$request->validated();
+        $result=[];
+        foreach ($datas['menuArray'] as $data) {
+            $menu=Menu::find($data['menu_id']);
+            if (isset($data['flavor_id'])) {
+                $flavor=Flavor::find($data['flavor_id']);
+                if ($flavor->menu_id != $menu->id) {
+                    return 'This flavor not belong the menu.';
+                }
             }
+
+            if ($menu->group_id != null && $menu->group_id != $member->group_id) {
+                return 'error menu';
+            }
+
+            if ($menu->quantity_limit != null && $data['quantity'] > $menu->quantity_limit) {
+                return 'This item only remain ' . $menu->quantity_limit . '.';
+            }
+
+
+            if ($menu->flavors->count() != 0 && !isset($data['flavor_id'])) {
+                return 'Please choose a flavor.';
+            }
+
+            $data['user_id']=$member->id;
+            $data['menu_name']=$menu->name;
+            $data['menu_price']=$menu->price;
+            $data['menu_date']=$menu->menu_date;
+
+            if (isset($data['flavor_id'])) {
+                $data['flavor_choice']=$flavor->choice;
+            }
+
+            if ($menu->quantity_limit != null) {
+                $menu->quantity_limit = $menu->quantity_limit - $data['quantity'];
+                $menu->save();
+            }
+
+            unset($data['flavor_id']);
+            $result[]=Order::create($data);
         }
 
-        if ($menu->group_id != null && $menu->group_id != $member->group_id) {
-            return 'error menu';
-        }
 
-        if ($menu->quantity_limit != null && $data['quantity'] > $menu->quantity_limit) {
-            return 'This item only remain ' . $menu->quantity_limit . '.';
-        }
-
-
-        if ($menu->flavors->count() != 0 && !isSet($data['flavor_id'])) {
-            return 'Please choose a flavor.';
-        }
-
-        $data['user_id']=$member->id;
-        $data['menu_name']=$menu->name;
-        $data['menu_price']=$menu->price;
-        $data['menu_date']=$menu->menu_date;
-
-        if (isSet($data['flavor_id'])) {
-            $data['flavor_choice']=$flavor->choice;
-        }
-
-        if ($menu->quantity_limit != null) {
-            $menu->quantity_limit = $menu->quantity_limit - $data['quantity'];
-            $menu->save();
-        }
-
-        unset($data['flavor_id']);
-
-        return Order::create($data);
+        return $result;
     }
 
     public function show()

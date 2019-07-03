@@ -26,33 +26,38 @@ class Timelimit
         $tomorrow=Carbon::tomorrow();
         $nowTime=Carbon::now();
         $timeCheck=Deadline::where('group_id', $member->group_id)->where('which_date', $today)->first();
-        $menuId=$request->get('menu_id');
+        $menuArray=$request->get('menuArray');
 
-        if (!Menu::where('id', $menuId)->exists()) {
-            return response(['error' => 'This menu id does not exist.'], 422);
-        }
-
-        $menu=Menu::find($request->get('menu_id'));
-        $menuDate=Carbon::parse($menu->menu_date);
-
-        if ($menuDate->lt($tomorrow)) {
-            return response(['error' => 'This item is overdate.'], 422);
-        }
-
-        if ($menuDate->eq($tomorrow)) {
-            if ($member->group->time_limit == 1) {
-                if ($timeCheck != null) {
-                    $timeCarbon=Carbon::parse($timeCheck->deadline_time);
-                    if ($nowTime->gt($timeCarbon)) {
-                        return response(['error' => 'over order time'], 422);
+        foreach ($menuArray as $single) {
+            foreach ($single as $key => $value) {
+                if ($key == 'menu_id') {
+                    if (!Menu::where('id', $value)->exists()) {
+                        return response(['error' => 'This menu id does not exist.'], 422);
                     }
-                }
+                    $menu=Menu::find($value);
+                    $menuDate=Carbon::parse($menu->menu_date);
 
-                if ($timeCheck == null && Carbon::parse($member->group->preset_time)->lt($nowTime)) {
-                    return response(['error' => 'over order time'], 422);
+                    if ($menuDate->lt($tomorrow)) {
+                        return response(['error' => 'This item is overdate.'], 422);
+                    }
+
+                    if ($menuDate->eq($tomorrow)) {
+                        if ($member->group->time_limit == 1) {
+                            if ($timeCheck != null) {
+                                $timeCarbon=Carbon::parse($timeCheck->deadline_time);
+                                if ($nowTime->gt($timeCarbon)) {
+                                    return response(['error' => 'over order time'], 422);
+                                }
+                            }
+
+                            if ($timeCheck == null && Carbon::parse($member->group->preset_time)->lt($nowTime)) {
+                                return response(['error' => 'over order time'], 422);
+                            }
+                        }
+                    }
                 }
             }
         }
-        return $next($request);
+                    return $next($request);
     }
 }
