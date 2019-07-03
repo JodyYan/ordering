@@ -24,8 +24,10 @@ class Addflavor extends FormRequest
     public function rules()
     {
         return [
-            'menu_id' => ['required', 'exists:menus,id'],
-            'choice' => ['required', 'string']
+            'flavorArray' => ['required', 'array'],
+            'flavorArray.*' => ['array'],
+            'flavorArray.*.menu_id' => ['required', 'exists:menus,id'],
+            'flavorArray.*.choice' => ['required', 'string']
         ];
     }
 }

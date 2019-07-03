@@ -21,8 +21,12 @@ class MenuController extends Controller
 
     public function flavorstore(Addflavor $request)
     {
-        $data=$request->validated();
-        return Flavor::create($data);
+        $datas=$request->validated();
+        $result=[];
+        foreach ($datas['flavorArray'] as $data) {
+            $result[]=Flavor::create($data);
+        }
+        return $result;
     }
 
     public function index()
