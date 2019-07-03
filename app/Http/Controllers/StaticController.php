@@ -108,7 +108,7 @@ class StaticController extends Controller
         $paymentStatus=(clone $query)->select(DB::raw("SUM(orders.paid) > 0 as payment_status"))
             ->value('payment_status');
         $personalPaid=(clone $query)
-            ->select('menu_name', 'menu_price', 'user_rice', 'user_vegetable', 'flavor_choice', 'note')
+            ->select('menu_name', 'menu_price', 'menu_date', 'user_rice', 'user_vegetable', 'flavor_choice', 'note')
             ->get();
 
         return [
