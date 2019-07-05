@@ -33,7 +33,7 @@ class StaticController extends Controller
             ->value('unpaid');
         $personalPaid=(clone $query)
             ->join('members', 'orders.user_id', '=', 'members.id')
-            ->select('members.name', 'user_id', DB::raw("SUM(menu_price * quantity) as person_paid"), DB::raw("SUM(orders.paid) > 0 as payment_status"))
+            ->select('members.name', 'user_id', DB::raw("SUM(menu_price * quantity) as person_paid"), DB::raw("SUM(orders.paid) = COUNT(orders.id) as payment_status"))
             ->groupBy('user_id')
             ->get();
 
@@ -105,7 +105,7 @@ class StaticController extends Controller
 
         $totalPrice=(clone $query)->select(DB::raw("SUM(menu_price * quantity) as total_price"))
             ->value('total_price');
-        $paymentStatus=(clone $query)->select(DB::raw("SUM(orders.paid) <= 0 as payment_status"))
+        $paymentStatus=(clone $query)->select(DB::raw("SUM(orders.paid) = COUNT(orders.id) as payment_status"))
             ->value('payment_status');
         $personalPaid=(clone $query)
             ->select('menu_name', 'menu_price', 'menu_date', 'user_rice', 'user_vegetable', 'flavor_choice', 'note')
