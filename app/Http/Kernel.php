@@ -65,6 +65,7 @@ class Kernel extends HttpKernel
         'memberidentify'=> \App\Http\Middleware\Memberidentify::class,
         'checktime' => \App\Http\Middleware\Timelimit::class,
         'order.update.check' => \App\Http\Middleware\OrderUpdate::class,
+        'log.document' => \App\Http\Middleware\LogDocument::class,
     ];
 
     /**
