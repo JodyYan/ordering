@@ -12,7 +12,7 @@ class DeadlineController extends Controller
     {
         $data=$request->validated();
         if (Deadline::where('which_date', $data['which_date'])->where('group_id', $data['group_id'])->exists()) {
-            return 'This data has existed.';
+            return response(['error' => 'This data has existed.'], 422);
         }
         return Deadline::create($data);
     }
@@ -23,7 +23,7 @@ class DeadlineController extends Controller
         $endDate=request()->get('end_date');
         $groupId=request()->get('group_id');
         if (!isset($startDate) || !isset($endDate)) {
-            return 'Date error';
+            return response(['error' => 'Date error'], 422);
         }
         return Deadline::where('group_id', $groupId)
             ->whereDate('which_date', '>=', $startDate)

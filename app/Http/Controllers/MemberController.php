@@ -23,12 +23,12 @@ class MemberController extends Controller
         $account=request()->get('account');
         $password=request()->get('password');
         if (!Member::where('account', $account)->exists()) {
-            return 'error account';
+            return response(['error' => 'error account'], 422);
         }
 
         $member=Member::where('account', $account)->first();
         if (!Hash::check($password, $member->password)) {
-            return 'error password';
+            return response(['error' => 'error password'], 422);
         }
         $token=Str::random(60);
         $member->api_token=$token;
@@ -41,7 +41,7 @@ class MemberController extends Controller
         $token=request()->bearerToken();
         $password=request()->get('yourpassword');
         if ($token!==$member->api_token) {
-            return 'token error';
+            return response(['error' => 'token error'], 422);
         }
         if (Hash::check($password, $member->password)) {
             $data=$request->validated();
@@ -51,14 +51,14 @@ class MemberController extends Controller
             $member->update($data);
             return $member;
         }
-        return 'error password';
+        return response(['error' => 'error password'], 422);
     }
 
     public function logout (Member $member)
     {
         $token=request()->bearerToken();
         if ($token!==$member->api_token) {
-            return 'token error';
+            return response(['error' => 'token error'], 422);
         }
 
         $member->api_token=null;

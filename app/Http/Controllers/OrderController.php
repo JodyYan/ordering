@@ -40,21 +40,21 @@ class OrderController extends Controller
             if (isset($data['flavor_id'])) {
                 $flavor=Flavor::find($data['flavor_id']);
                 if ($flavor->menu_id != $menu->id) {
-                    return 'This flavor not belong the menu.';
+                    return response(['error' => 'This flavor not belong the menu.'], 422);
                 }
             }
 
             if ($menu->group_id != null && $menu->group_id != $member->group_id) {
-                return 'error menu';
+                return response(['error' => 'error menu'], 422);
             }
 
             if ($menu->quantity_limit != null && $data['quantity'] > $menu->quantity_limit) {
-                return 'This item only remain ' . $menu->quantity_limit . '.';
+                return response(['error' => 'This item only remain ' . $menu->quantity_limit . '.'], 422);
             }
 
 
             if ($menu->flavors->count() != 0 && !isset($data['flavor_id'])) {
-                return 'Please choose a flavor.';
+                return response(['error' => 'Please choose a flavor.'], 422);
             }
 
             $data['user_id']=$member->id;
@@ -98,7 +98,7 @@ class OrderController extends Controller
         $token=request()->bearerToken();
         $member=Member::where('api_token', $token)->first();
         if ($member->id != $order->user_id) {
-            return 'Please choose true order.';
+            return response(['error' => 'Please choose true order.'], 422);
         }
 
         $data=$request->validated();
@@ -106,7 +106,7 @@ class OrderController extends Controller
         if (isset($data['flavor_id'])) {
             $flavor=Flavor::find($data['flavor_id']);
             if ($flavor->menu_id != $order->menu_id) {
-                return 'This flavor not belong the menu.';
+                return response(['error' => 'This flavor not belong the menu.'], 422);
             }
         }
 
@@ -133,7 +133,7 @@ class OrderController extends Controller
                 }
 
                 if ($mql < $disparity) {
-                    return 'This item only remain ' . $menu->quantity_limit . '.';
+                    return response(['error' => 'This item only remain ' . $menu->quantity_limit . '.'], 422);
                 }
             }
         }
@@ -153,7 +153,7 @@ class OrderController extends Controller
         $token=request()->bearerToken();
         $member=Member::where('api_token', $token)->first();
         if ($member->id != $order->user_id) {
-            return 'Please choose true order.';
+            return response(['error' => 'Please choose true order.'], 422);
         }
 
         $menu=Menu::find($order->menu_id);

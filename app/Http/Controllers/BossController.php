@@ -22,12 +22,12 @@ class BossController extends Controller
         $account=request()->get('account');
         $password=request()->get('password');
         if (!Boss::where('account', $account)->exists()) {
-            return 'error account';
+            return response(['error' => 'error account'], 422);
         }
 
         $boss=Boss::where('account', $account)->first();
         if (!Hash::check($password, $boss->password)) {
-            return 'error password';
+            return response(['error' => 'error password'], 422);
         }
         $token=Str::random(60);
         $boss->api_token=$token;
@@ -38,7 +38,7 @@ class BossController extends Controller
     public function show(Boss $boss) {
         $token=request()->bearerToken();
         if ($token!==$boss->api_token) {
-            return 'token error';
+            return response(['error' => 'token error'], 422);
         }
         $boss=Boss::findorfail($boss)->first();
         return ['name'=>$boss->name, 'account'=>$boss->account];
@@ -49,7 +49,7 @@ class BossController extends Controller
         $password=request()->get('yourpassword');
         if (Hash::check($password, $boss->password)) {
             if ($token!==$boss->api_token) {
-                 return 'token error';
+                 return response(['error' => 'token error'], 422);
             }
 
              $data=$request->validated();
@@ -59,14 +59,14 @@ class BossController extends Controller
             $boss->update($data);
             return $boss;
         }
-        return 'error password';
+        return response(['error' => 'error password'], 422);
     }
 
     public function logout (Boss $boss)
     {
         $token=request()->bearerToken();
         if ($token!==$boss->api_token) {
-            return 'token error';
+            return response(['error' => 'token error'], 422);
         }
 
         $boss->api_token=null;
