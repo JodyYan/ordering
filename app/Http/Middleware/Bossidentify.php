@@ -21,7 +21,7 @@ class Bossidentify
             return response(['error'=>'without token'], 401);
         }
         if (!Boss::where('api_token', $token)->exists()) {
-            return response(['error'=>'token dose not exist'], 401);
+            return response(['error'=>'token does not exist'], 401);
         }
         return $next($request);
     }
