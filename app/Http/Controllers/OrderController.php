@@ -21,8 +21,10 @@ class OrderController extends Controller
         $token=request()->bearerToken();
         $member=Member::where('api_token', $token)->first();
         $menuDate=request()->get('menu_date');
-        $menus=Menu::where('group_id', $member->group_id)
-            ->orWhere('group_id', null)
+        $menus=Menu::where(function ($query) use ($member){
+            $query->where('group_id', $member->group_id)
+            ->orWhere('group_id', null);
+        })
             ->whereDate('menu_date', $menuDate)
             ->with('flavors')
             ->get();
