@@ -47,11 +47,11 @@ class OrderController extends Controller
                         }
                     }
 
-                    if ($menu->group_id != null && $menu->group_id != $member->group_id) {
+                    if ($menu->group_id !== null && $menu->group_id != $member->group_id) {
                         throw new OrderException(['error' => 'error menu'], 422);
                     }
 
-                    if ($menu->quantity_limit != null && $data['quantity'] > $menu->quantity_limit) {
+                    if ($menu->quantity_limit !== null && $data['quantity'] > $menu->quantity_limit) {
                         throw new OrderException(['error' => 'This item only remain ' . $menu->quantity_limit . '.'], 422);
                     }
 
@@ -69,7 +69,7 @@ class OrderController extends Controller
                         $data['flavor_choice']=$flavor->choice;
                     }
 
-                    if ($menu->quantity_limit != null) {
+                    if ($menu->quantity_limit !== null) {
                         $menu->quantity_limit = $menu->quantity_limit - $data['quantity'];
                         $menu->save();
                     }
