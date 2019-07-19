@@ -25,7 +25,7 @@ class Memberupdate extends FormRequest
     {
         return [
             'name'=>['between:1,20', 'string'],
-            'account'=>['between:1,15', 'string', 'unique:members,account'],
+            'account'=>['between:1,50', 'string', 'unique:members,account'],
             'password'=>['between:1,15', 'string'],
             'rice'=>['integer', 'between:1,7'],
             'vegetable'=>['integer', 'between:1,4'],
